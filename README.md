@@ -1,127 +1,184 @@
-# Projeto 03 — Infraestrutura como Código com Terraform
+# 🚀 Infraestrutura como Código com Terraform (AWS)
 
-## 🎯 Objetivo
+Este projeto demonstra a criação de uma infraestrutura **reproduzível, versionada e destruível** utilizando Terraform na AWS, seguindo práticas reais de **Infraestrutura como Código (IaC)**.
 
-Criar uma infraestrutura **declarativa, reproduzível e explicável** utilizando Terraform, seguindo boas práticas de Infraestrutura como Código (IaC).
-
-Este projeto demonstra como provisionar e destruir recursos de forma controlada, versionada e previsível.
+O foco é mostrar um fluxo profissional: **plan → apply → destroy**, com uso de variáveis, outputs e organização modular.
 
 ---
 
-## 🧱 Infraestrutura criada
+# 🎯 Objetivo
 
-Neste projeto, o Terraform é responsável por criar:
-
-* ✅ **1 instância EC2 simples (Free Tier)**
-* ✅ **Security Group** permitindo acesso básico
-* ✅ Uso de **variáveis** para reutilização
-* ✅ **Outputs** para exibir informações importantes
-
-> A infraestrutura foi pensada para funcionar dentro do **AWS Free Tier**, evitando custos.
+* Provisionar recursos na AWS com Terraform
+* Garantir reprodutibilidade e previsibilidade
+* Utilizar variáveis para reutilização
+* Expor informações relevantes via outputs
+* Manter a infraestrutura facilmente destruível (controle de custos)
 
 ---
 
-## 🗂 Estrutura do projeto
+# 🧱 Arquitetura
+
+Recursos provisionados:
+
+* **EC2 (Free Tier)**: instância para testes
+* **Security Group**: regras básicas de acesso
+
+Fluxo:
+
+```
+Terraform → AWS Provider → EC2 + Security Group
+```
+
+---
+
+# 🛠️ Stack Utilizada
+
+* Terraform
+* AWS (EC2)
+* AWS CLI
+
+---
+
+# 📁 Estrutura do Projeto
 
 ```
 project-03-terraform/
-├── main.tf         # Recursos principais da infraestrutura
+├── main.tf         # Definição dos recursos
 ├── variables.tf    # Variáveis reutilizáveis
-├── outputs.tf      # Saídas do Terraform
-├── README.md       # Documentação do projeto
+├── outputs.tf      # Saídas da infraestrutura
+└── README.md
 ```
 
 ---
 
-## 🔄 Fluxo Terraform: plan → apply
-
-### 1️⃣ Inicializar o Terraform
-
-```bash
-terraform init
-```
-
-* Baixa os providers necessários
-* Prepara o diretório de trabalho
-
-### 2️⃣ Verificar o plano de execução
-
-```bash
-terraform plan
-```
-
-* Mostra **exatamente** o que será criado
-* Nenhum recurso é alterado neste passo
-* Critério do projeto: **plan limpo, sem erros**
-
-### 3️⃣ Aplicar a infraestrutura
-
-```bash
-terraform apply
-```
-
-* Cria os recursos declarados
-* Confirmação manual para segurança
-
----
-
-## 🧨 Como destruir a infraestrutura
-
-Para remover **todos os recursos criados**:
-
-```bash
-terraform destroy
-```
-
-* Elimina a infraestrutura com segurança
-* Evita custos desnecessários
-* Garante ambiente limpo após testes
-
----
-
-## ✅ Boas práticas utilizadas
-
-✔ Infraestrutura declarativa
-
-✔ Código versionável (Git)
-
-✔ Separação de responsabilidades:
-
-* `main.tf` → recursos
-* `variables.tf` → configuração
-* `outputs.tf` → informações finais
-
-✔ Uso de variáveis ao invés de valores fixos
-
-✔ Infra destruível sem erros
-
-✔ Compatível com CI/CD futuramente
-
----
-
-## 📌 Requisitos
+# ⚙️ Pré-requisitos
 
 * Terraform instalado
 * Conta AWS (Free Tier)
 * AWS CLI configurada
 
----
+Configurar credenciais:
 
-## 🏁 Critérios de conclusão atendidos
-
-✔ `terraform plan` sem erros
-
-✔ `terraform apply` funcional
-
-✔ Infra criada e destruída com sucesso
+```bash
+aws configure
+```
 
 ---
 
-## 👤 Autor
+# 🚀 Execução
 
-**Daniel Viana**
-GitHub: [https://github.com/danielviana2127](https://github.com/danielviana2127)
+## 1️⃣ Inicializar
+
+```bash
+terraform init
+```
+
+Função:
+
+* Baixar providers
+* Preparar diretório
 
 ---
 
-📚 Projeto educacional com foco em **DevOps e Infraestrutura como Código**
+## 2️⃣ Planejar
+
+```bash
+terraform plan
+```
+
+Função:
+
+* Mostrar alterações
+* Validar sintaxe
+
+✔ Critério: execução sem erros
+
+---
+
+## 3️⃣ Aplicar
+
+```bash
+terraform apply
+```
+
+Função:
+
+* Criar infraestrutura
+* Exigir confirmação manual
+
+---
+
+# 🧨 Destruição (Controle de Custos)
+
+```bash
+terraform destroy
+```
+
+Função:
+
+* Remover todos os recursos
+* Evitar cobrança na AWS
+
+---
+
+# 📤 Outputs
+
+Exemplo de uso:
+
+```bash
+terraform output
+```
+
+Permite obter:
+
+* IP público da instância
+* Informações relevantes da infra
+
+---
+
+# 🧠 Boas Práticas Aplicadas
+
+* Infraestrutura declarativa
+* Código versionado (Git)
+* Separação de responsabilidades
+* Uso de variáveis (evita hardcode)
+* Infra destruível (idempotência)
+* Compatível com CI/CD
+
+---
+
+# 🧪 Troubleshooting
+
+### ❌ Erro de credenciais
+
+* Verificar `aws configure`
+
+### ❌ Provider não encontrado
+
+* Rodar `terraform init`
+
+### ❌ Plan falha
+
+* Validar sintaxe (`terraform validate`)
+
+---
+
+# 📚 Aprendizados
+
+* Provisionamento na AWS com Terraform
+* Fluxo real de IaC
+* Gerenciamento de estado
+* Boas práticas para ambientes DevOps
+
+---
+
+# 👤 Autor
+
+Daniel Viana
+🔗 [https://github.com/danielviana2127](https://github.com/danielviana2127)
+
+---
+
+# ⭐ Destaque
+
+Projeto desenvolvido com foco em práticas reais de mercado, simulando o uso de Terraform em ambientes profissionais de infraestrutura cloud.
