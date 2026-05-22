@@ -1,73 +1,171 @@
-# 🚀 Infraestrutura como Código com Terraform (AWS)
+# 🚀 Terraform Docker Infrastructure
 
-Este projeto demonstra a criação de uma infraestrutura **reproduzível, versionada e destruível** utilizando Terraform na AWS, seguindo práticas reais de **Infraestrutura como Código (IaC)**.
+Projeto de Infraestrutura como Código (IaC) utilizando Terraform para provisionamento automatizado de recursos Docker.
 
-O foco é mostrar um fluxo profissional: **plan → apply → destroy**, com uso de variáveis, outputs e organização modular.
+O projeto demonstra práticas modernas de automação de infraestrutura utilizando Terraform Provider Docker, permitindo criar ambientes reproduzíveis, versionados e facilmente gerenciáveis.
 
 ---
 
-# 🎯 Objetivo
+# 🧪 Projeto 100% Funcional
 
-* Provisionar recursos na AWS com Terraform
-* Garantir reprodutibilidade e previsibilidade
-* Utilizar variáveis para reutilização
-* Expor informações relevantes via outputs
-* Manter a infraestrutura facilmente destruível (controle de custos)
+Este projeto foi executado localmente e demonstra:
+
+* Provisionamento automatizado com Terraform
+* Criação de network Docker
+* Download automático de imagens Docker
+* Provisionamento de containers
+* Uso de variáveis reutilizáveis
+* Outputs automatizados
+* Infraestrutura declarativa
+* Idempotência
+
+---
+
+# 📌 Visão Geral
+
+O objetivo deste projeto é demonstrar como utilizar Terraform para automatizar infraestrutura containerizada utilizando Docker Provider.
+
+A infraestrutura provisiona automaticamente:
+
+* Docker Network
+* Imagem Nginx
+* Container Nginx
+* Exposição de portas
+* Comunicação entre recursos
+
+Tudo é gerenciado de forma declarativa através do Terraform.
 
 ---
 
 # 🧱 Arquitetura
 
-Recursos provisionados:
-
-* **EC2 (Free Tier)**: instância para testes
-* **Security Group**: regras básicas de acesso
-
-Fluxo:
-
-```
-Terraform → AWS Provider → EC2 + Security Group
+```text
+Terraform
+    ↓
+Docker Provider
+    ↓
+Docker Network
+    ↓
+Nginx Container
 ```
 
 ---
 
-# 🛠️ Stack Utilizada
+# ⚙️ Tecnologias Utilizadas
 
 * Terraform
-* AWS (EC2)
-* AWS CLI
+* Docker
+* Docker Provider (kreuzwerker/docker)
+* Linux
+* Infrastructure as Code (IaC)
 
 ---
 
-# 📁 Estrutura do Projeto
+# 📦 Estrutura do Projeto
 
+```text
+terraform-docker-infrastructure/
+│
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── .terraform.lock.hcl
+├── README.md
+│
+└── .terraform/
+    └── providers/
 ```
-project-03-terraform/
-├── main.tf         # Definição dos recursos
-├── variables.tf    # Variáveis reutilizáveis
-├── outputs.tf      # Saídas da infraestrutura
-└── README.md
+
+---
+
+# ⚙️ Recursos Provisionados
+
+## Docker Network
+
+Criação automática de uma network Docker dedicada para comunicação entre containers.
+
+---
+
+## Docker Image
+
+Download automático da imagem oficial Nginx.
+
+---
+
+## Docker Container
+
+Provisionamento automatizado de container Nginx utilizando:
+
+* Port mapping
+* Docker network
+* Infraestrutura declarativa
+
+---
+
+# 🛠️ Variáveis Utilizadas
+
+O projeto utiliza variáveis para maior reutilização e flexibilidade.
+
+## Exemplos
+
+```hcl
+variable "network_name" {
+  default = "app-network"
+}
+
+variable "image_name" {
+  default = "nginx:latest"
+}
+
+variable "container_name" {
+  default = "nginx-container"
+}
+
+variable "external_port" {
+  default = 8080
+}
 ```
+
+---
+
+# 📤 Outputs
+
+O projeto expõe informações relevantes após o provisionamento.
+
+## Exemplos
+
+```bash
+terraform output
+```
+
+Possíveis saídas:
+
+* Nome do container
+* IP do container
+* Informações da infraestrutura
 
 ---
 
 # ⚙️ Pré-requisitos
 
-* Terraform instalado
-* Conta AWS (Free Tier)
-* AWS CLI configurada
+Antes de executar:
 
-Configurar credenciais:
+* Terraform instalado
+* Docker instalado
+* Docker daemon em execução
+
+Verificar versões:
 
 ```bash
-aws configure
+terraform version
+docker --version
 ```
 
 ---
 
-# 🚀 Execução
+# 🚀 Execução do Projeto
 
-## 1️⃣ Inicializar
+## 1️⃣ Inicializar Terraform
 
 ```bash
 terraform init
@@ -75,12 +173,26 @@ terraform init
 
 Função:
 
-* Baixar providers
-* Preparar diretório
+* Download dos providers
+* Inicialização do ambiente Terraform
+* Preparação do diretório local
 
 ---
 
-## 2️⃣ Planejar
+## 2️⃣ Validar Configuração
+
+```bash
+terraform validate
+```
+
+Função:
+
+* Validar sintaxe
+* Garantir integridade da configuração
+
+---
+
+## 3️⃣ Planejar Infraestrutura
 
 ```bash
 terraform plan
@@ -88,14 +200,13 @@ terraform plan
 
 Função:
 
-* Mostrar alterações
-* Validar sintaxe
-
-✔ Critério: execução sem erros
+* Mostrar alterações antes da aplicação
+* Simular provisionamento
+* Validar recursos criados
 
 ---
 
-## 3️⃣ Aplicar
+## 4️⃣ Aplicar Infraestrutura
 
 ```bash
 terraform apply
@@ -103,12 +214,13 @@ terraform apply
 
 Função:
 
-* Criar infraestrutura
-* Exigir confirmação manual
+* Criar network Docker
+* Baixar imagem Nginx
+* Provisionar container
 
 ---
 
-# 🧨 Destruição (Controle de Custos)
+## 5️⃣ Destruir Infraestrutura
 
 ```bash
 terraform destroy
@@ -116,69 +228,113 @@ terraform destroy
 
 Função:
 
-* Remover todos os recursos
-* Evitar cobrança na AWS
+* Remover todos os recursos provisionados
+* Garantir limpeza completa do ambiente
 
 ---
 
-# 📤 Outputs
+# 🧠 Conceitos Demonstrados
 
-Exemplo de uso:
+Este projeto demonstra conhecimentos em:
+
+* Infrastructure as Code (IaC)
+* Terraform Providers
+* Terraform Resources
+* Terraform Variables
+* Terraform Outputs
+* Idempotência
+* Docker Networking
+* Provisionamento automatizado
+* Containers
+* Infraestrutura declarativa
+
+---
+
+# 🛠️ Troubleshooting
+
+## ❌ Provider não encontrado
+
+Executar:
 
 ```bash
-terraform output
+terraform init
 ```
 
-Permite obter:
+---
 
-* IP público da instância
-* Informações relevantes da infra
+## ❌ Docker daemon não iniciado
+
+Verificar status do Docker:
+
+```bash
+systemctl status docker
+```
 
 ---
 
-# 🧠 Boas Práticas Aplicadas
+## ❌ Terraform validation falha
 
-* Infraestrutura declarativa
-* Código versionado (Git)
-* Separação de responsabilidades
-* Uso de variáveis (evita hardcode)
-* Infra destruível (idempotência)
-* Compatível com CI/CD
+Executar:
 
----
-
-# 🧪 Troubleshooting
-
-### ❌ Erro de credenciais
-
-* Verificar `aws configure`
-
-### ❌ Provider não encontrado
-
-* Rodar `terraform init`
-
-### ❌ Plan falha
-
-* Validar sintaxe (`terraform validate`)
+```bash
+terraform validate
+```
 
 ---
 
-# 📚 Aprendizados
+## ❌ Container não inicia
 
-* Provisionamento na AWS com Terraform
-* Fluxo real de IaC
-* Gerenciamento de estado
-* Boas práticas para ambientes DevOps
+Verificar containers Docker:
+
+```bash
+docker ps -a
+```
 
 ---
 
-# 👤 Autor
+# 📚 Lessons Learned
+
+Principais conhecimentos adquiridos durante o projeto:
+
+* Provisionamento declarativo com Terraform
+* Uso de Docker Provider
+* Automação de containers
+* Gerenciamento de infraestrutura local
+* Terraform state management
+* Idempotência
+* Reprodutibilidade de ambientes
+* Provisionamento automatizado
+* Networking Docker
+
+---
+
+# 🎯 Objetivo do Projeto
+
+Demonstrar conhecimento prático em:
+
+* Terraform
+* Docker
+* Infrastructure as Code
+* Automação de infraestrutura
+* Provisionamento declarativo
+* Containers
+* DevOps
+
+---
+
+# 📸 Evidências Recomendadas
+
+Adicionar screenshots de:
+
+* terraform init
+* terraform plan
+* terraform apply
+* docker ps
+* container Nginx funcionando
+* terraform destroy
+
+---
+
+# 👨‍💻 Autor
 
 Daniel Viana
-🔗 [https://github.com/danielviana2127](https://github.com/danielviana2127)
-
----
-
-# ⭐ Destaque
-
-Projeto desenvolvido com foco em práticas reais de mercado, simulando o uso de Terraform em ambientes profissionais de infraestrutura cloud.
